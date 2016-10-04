@@ -1,0 +1,13 @@
+#main-container{
+  width: 75vw;
+  margin: 5vh auto;
+}
+#location-input{
+  margin: 0 auto;
+  display: flex;
+}
+#location{
+  text-align: center;
+  width: 15em;
+  height: 2em;
+}
