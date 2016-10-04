@@ -36,7 +36,9 @@ var input= req.params.input;
   }).then(function(data) {
     result=[]
     data.forEach(function(el){
+      if (!result.includes(el)){
       result.push(el.data.name)
+    }
     })
     res.send(result)
   });

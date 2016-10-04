@@ -11,7 +11,8 @@ $("#location-input").autocomplete({
               },
           });
       },
-      minLength: 3
+      minLength: 3,
+      appendTo: "#form-container"
 });
 
 
