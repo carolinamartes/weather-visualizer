@@ -1,10 +1,19 @@
 $(console.log("working..."))
 
-$('#location-input').on("keypress",function(e){
-$("#location-input").select2({
-  data:city.list.json.name
+$("#location-input").autocomplete({
+  source: function( request, response ) {
+          $.ajax({
+              type : 'GET',
+              url: '/autocomplete/'+$('#location-input').val(),
+              success: function(data) {
+                console.log(data)
+                  response(data)
+              },
+          });
+      },
+      minLength: 3
 });
-});
+
 
 $('#form').on("submit",function(e){
   e.preventDefault()
