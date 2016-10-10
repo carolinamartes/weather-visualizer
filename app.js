@@ -17,10 +17,9 @@ app.get('/', function (req, res) {
 
 app.get('/search/:input', function (req, res) {
   var query= req.params.input;
-  var url= "http://api.openweathermap.org/data/2.5/forecast?q="+query+'&APPID='+process.env.WEATHER_API_ID
+  var url= "http://api.openweathermap.org/data/2.5/forecast?id="+query+'&APPID='+process.env.WEATHER_API_ID
   request(url, function(error, response, data) {
   if (!error && response.statusCode == 200) {
-  console.log(data)
   res.send(data)
 }
 })
@@ -37,7 +36,7 @@ var input= req.params.input;
     result=[]
     data.forEach(function(el){
       if (!result.includes(el)){
-      result.push(el.data.name)
+      result.push({label:el.data.name+", "+el.data.country, value:el.data._id})
     }
     })
     res.send(result)

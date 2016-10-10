@@ -4,17 +4,21 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen">
     <link rel="stylesheet" href="/css/style.css" media="screen">
     <link rel="stylesheet" href="/css/jquery_theme.css" media="screen">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <meta charset="utf-8">
     <title>Weather Visualizer</title>
   </head>
   <body>
     <div id="main-container">
-      <div id="form-container">
+      <div id="searchval">
         <form id="form">
           <input type="text" id="location-input" value="" placeholder="Search city, zip, or place">
         </form>
       </div>
-    </div>
+      <div id="myDiv">
+      </div>
+      </div>
+
   </body>
   <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
