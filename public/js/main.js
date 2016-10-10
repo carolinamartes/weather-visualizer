@@ -48,12 +48,23 @@ $('#form').on("submit",function(e){
     var toFahrenheit=function(temp){
           return Math.floor(temp* 9/5 - 459.67)
         }
+
     for(var i=0;i<output.list.length;i++){
       output.list[i].main.temp= toFahrenheit(output.list[i].main.temp)
-      console.log(output.list)
     }
+
+    const makeTempArray=function(startNum){
+      tempArray=[];
+      for(var i=startNum;i<40;i+=8){
+        tempArray.push(output.list[i].main.temp)
+      }
+      return tempArray
+    }
+    const morning=makeTempArray(2);
+    const afternoon=makeTempArray(5);
+    const night=makeTempArray(7);
       Plotly.newPlot( myDiv, [{
-          z: [[output.list[2].main.temp, output.list[10].main.temp, output.list[18].main.temp, output.list[26].main.temp, output.list[34].main.temp], [output.list[5].main.temp, output.list[13].main.temp, output.list[21].main.temp, output.list[29].main.temp, output.list[37].main.temp], [output.list[7].main.temp, output.list[15].main.temp, output.list[23].main.temp, output.list[30].main.temp, output.list[38].main.temp]],
+          z: [morning,afternoon,night],
           y: ['Morning', 'Afternoon', 'Evening'],
           x: ['Tomorrow', '+2 Days', '+3 Days', '+4 Days', '+5 Days'],
           type: 'heatmap'
