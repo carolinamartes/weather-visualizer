@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 
 app.get('/search/:input', function (req, res) {
   var query= req.params.input;
-  var url= "http://api.openweathermap.org/data/2.5/forecast?id="+query+'&APPID='+process.env.WEATHER_API_ID
+  var url= "http://api.openweathermap.org/data/2.5/forecast?id="+query+'&units=imperial'+'&APPID='+process.env.WEATHER_API_ID
   request(url, function(error, response, data) {
   if (!error && response.statusCode == 200) {
   res.send(data)

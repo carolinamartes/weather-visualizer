@@ -1,16 +1,32 @@
+body{
+   font-family: 'Raleway, Helvetica, monospace';
+}
+
 #main-container{
   width: 75vw;
   margin: 5vh auto;
+  font-family: 'Raleway, Helvetica, monospace';
+  font-size: 1.2em;
+  font-weight: 500;
 }
 #location-input{
   margin: 0 auto;
   display: flex;
-}
-#location{
-  text-align: center;
   width: 15em;
-  height: 2em;
+  height: 3em;
+  text-align: center;
 }
+
+#plot{
+  margin:  0 auto;
+}
+
+#description{
+  margin:  0 auto;
+  text-align: center;
+  font-size: 1.3em;
+}
+
 rect.bordered {
   stroke: #E6E6E6;
   stroke-width:2px;
@@ -18,7 +34,7 @@ rect.bordered {
 
 text.mono {
   font-size: 9pt;
-  font-family: Consolas, courier;
+  font-family: Roboto, sans-serif;
   fill: #aaa;
 }
 
