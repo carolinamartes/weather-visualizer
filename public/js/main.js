@@ -37,12 +37,8 @@ $('#form').on("submit",function(e){
   type: 'GET',
   url: 'search/'+query,
 
-  beforeSend:function(){
-    // this is where we append a loading image
-    $('#ajax-panel').html('<div class="loading"><img src="/images/loading.gif" alt="Loading..." /></div>');
-  },
-
   success:function(output){
+  $('#description').html('');
   output=JSON.parse(output)
   console.log(output)
    myDiv = document.getElementById('myDiv');
@@ -78,68 +74,88 @@ $('#form').on("submit",function(e){
       } );
 
     plot.on('plotly_click', function(data){
-        console.log(data)
         const pointx=data.points[0].pointNumber[0]
         const pointy=data.points[0].pointNumber[1]
 
-        switch(true) {
-            case pointx==0 && pointy==0:
-                $('#description').text("Tomorrow morning: " +output.list[2].weather[0].description)
-                break;
-            case pointx==1 && pointy==0:
-                $('#description').text("Tomorrow afternoon: " +output.list[4].weather[0].description)
-                break;
-            case pointx==2 && pointy==0:
-                $('#description').text("Tomorrow evening: " +output.list[6].weather[0].description)
-                break;
-            case pointx==0 && pointy==1:
-               $('#description').text("In 2 days, in the morning: "+output.list[10].weather[0].description)
-                break;
-            case pointx==1 && pointy==1:
-               $('#description').text("In 2 days, in the afternoon: "+output.list[12].weather[0].description)
-                break;
-            case pointx==2 && pointy==1:
-               $('#description').text("In 2 days, in the evening: "+output.list[14].weather[0].description)
-                break;
-            case pointx==0 && pointy==2:
-               $('#description').text("In 3 days, in the morning: "+output.list[18].weather[0].description)
-                break;
-            case pointx==1 && pointy==2:
-               $('#description').text("In 3 days, in the afternoon: "+output.list[20].weather[0].description)
-                break;
-            case pointx==2 && pointy==2:
-               $('#description').text("In 3 days, in the evening: "+output.list[22].weather[0].description)
-                break;
-            case pointx==0 && pointy==3:
-               $('#description').text("In 4 days, in the morning: "+output.list[26].weather[0].description)
-                break;
-            case pointx==1 && pointy==3:
-               $('#description').text("In 4 days, in the afternoon: "+output.list[28].weather[0].description)
-                break;
-            case pointx==2 && pointy==3:
-               $('#description').text("In 4 days, in the evening: "+output.list[30].weather[0].description)
-                break;
-            case pointx==0 && pointy==4:
-               $('#description').text("In 5 days, in the morning: "+output.list[34].weather[0].description)
-                break;
-            case pointx==1 && pointy==4:
-               $('#description').text("In 5 days, in the afternoon: "+output.list[36].weather[0].description)
-                break;
-            case pointx==2 && pointy==4:
-               $('#description').text("In 5 days, in the evening: "+output.list[38].weather[0].description)
-                break;
+        let checkDescription=function(weatherDescription){
+          switch(true){
+            case weatherDescription.includes("clear"):
+              $('#description').html('<img src="/images/png/sunny.png" />')
+              break;
+            case weatherDescription.includes("clouds"):
+              $('#description').html('<img src="/images/png/cloudy-1.png" />')
+              break;
+            case weatherDescription.includes("rain"):
+            case weatherDescription.includes("drizzle"):
+              $('#description').html('<img src="/images/png/rain.png" />')
+              break;
+            case weatherDescription.includes("thunderstorm"):
+              $('#description').html('<img src="/images/png/storm.png" />')
+              break;
+            case weatherDescription.includes("hail"):
+              $('#description').html('<img src="/images/png/hail.png" />')
+              break;
             default:
-                console.log("nope")
+             $('#description').html('');
+             console.log(weatherDescription)
+          }
         }
 
-
+        switch(true) {
+            case pointx==0 && pointy==0:
+                checkDescription(output.list[2].weather[0].description)
+                break;
+            case pointx==1 && pointy==0:
+                checkDescription(output.list[4].weather[0].description)
+                break;
+            case pointx==2 && pointy==0:
+                checkDescription(output.list[6].weather[0].description)
+                break;
+            case pointx==0 && pointy==1:
+               checkDescription(output.list[10].weather[0].description)
+                break;
+            case pointx==1 && pointy==1:
+               checkDescription(output.list[12].weather[0].description)
+                break;
+            case pointx==2 && pointy==1:
+               checkDescription(output.list[14].weather[0].description)
+                break;
+            case pointx==0 && pointy==2:
+               checkDescription(output.list[18].weather[0].description)
+                break;
+            case pointx==1 && pointy==2:
+               checkDescription(output.list[20].weather[0].description)
+                break;
+            case pointx==2 && pointy==2:
+               checkDescription(output.list[22].weather[0].description)
+                break;
+            case pointx==0 && pointy==3:
+               checkDescription(output.list[26].weather[0].description)
+                break;
+            case pointx==1 && pointy==3:
+               checkDescription(output.list[28].weather[0].description)
+                break;
+            case pointx==2 && pointy==3:
+               checkDescription(output.list[30].weather[0].description)
+                break;
+            case pointx==0 && pointy==4:
+               checkDescription(output.list[34].weather[0].description)
+                break;
+            case pointx==1 && pointy==4:
+               checkDescription(output.list[36].weather[0].description)
+                break;
+            case pointx==2 && pointy==4:
+               checkDescription(output.list[38].weather[0].description)
+                break;
+            default:
+                console.log("Error")
+        }
 
     });
 
     console.log(output)
   },
   error:function(error){
-
     console.log(error)
   }
 });
