@@ -4,7 +4,7 @@ body{
 
 #main-container{
   width: 80vw;
-  margin: 5vh auto;
+  margin: 3vh auto;
   font-family: 'Raleway, Helvetica, monospace';
   font-size: 1.2em;
   font-weight: 500;
@@ -17,13 +17,21 @@ body{
   height: 3em;
   text-align: center;
 }
-form{
+form, #tempType{
   float: right;
+}
+
+#tempType{
+  padding-left: 1vw;
 }
 
 #plot{
   margin:  0 auto;
-  margin-top: 5vh;
+  margin-top: 2vh;
+}
+
+.icon{
+  max-height: 7em;
 }
 
 #description{

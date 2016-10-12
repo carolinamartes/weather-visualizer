@@ -26,7 +26,6 @@ function errorFunction(){
     geocoder.geocode({'latLng': latlng}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         if (results[1]) {
-          alert(results[0].formatted_address)
         //find country name
             for (var i=0; i<results[0].address_components.length; i++) {
             for (var b=0;b<results[0].address_components[i].types.length;b++) {
@@ -47,7 +46,6 @@ function errorFunction(){
                       type : 'GET',
                       url: '/geolocation/'+city+'/'+state,
                       success: function(data) {
-                        console.log(data[0].value);
                         $('#searchval').val(data[0].value)
                       },
                   });
@@ -93,14 +91,15 @@ $("#location-input").autocomplete({
 $('#form').on("submit",function(e){
   e.preventDefault();
   let query=$('#searchval').val()
+  let temp=$("#tempType label.active input").val();
+  console.log(temp)
   $.ajax({
   type: 'GET',
-  url: 'search/'+query,
+  url: 'search/'+query+'/'+temp,
 
   success:function(output){
   $('#description').html('');
   output=JSON.parse(output)
-  console.log(output)
    myDiv = document.getElementById('myDiv');
 
     var makeTempArray=function(startNum){
@@ -141,20 +140,20 @@ $('#form').on("submit",function(e){
         let checkDescription=function(weatherDescription){
           switch(true){
             case weatherDescription.includes("clear"):
-              $('#description').html('<img src="/images/png/sunny.png" />')
+              $('#description').html('<img class="icon" src="/images/png/sunny.png" />')
               break;
             case weatherDescription.includes("clouds"):
-              $('#description').html('<img src="/images/png/cloudy-1.png" />')
+              $('#description').html('<img class="icon" src="/images/png/cloudy-1.png" />')
               break;
             case weatherDescription.includes("rain"):
             case weatherDescription.includes("drizzle"):
-              $('#description').html('<img src="/images/png/rain.png" />')
+              $('#description').html('<img class="icon" src="/images/png/rain.png" />')
               break;
             case weatherDescription.includes("thunderstorm"):
-              $('#description').html('<img src="/images/png/storm.png" />')
+              $('#description').html('<img class="icon" src="/images/png/storm.png" />')
               break;
             case weatherDescription.includes("hail"):
-              $('#description').html('<img src="/images/png/hail.png" />')
+              $('#description').html('<img class="icon" src="/images/png/hail.png" />')
               break;
             default:
              $('#description').html('');

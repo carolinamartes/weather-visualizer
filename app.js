@@ -15,9 +15,10 @@ app.get('/', function (req, res) {
   res.render('index');
 });
 
-app.get('/search/:input', function (req, res) {
+app.get('/search/:input/:tempType', function (req, res) {
   var query= req.params.input;
-  var url= "http://api.openweathermap.org/data/2.5/forecast?id="+query+'&units=imperial'+'&APPID='+process.env.WEATHER_API_ID
+  var tempType= req.params.tempType;
+  var url= "http://api.openweathermap.org/data/2.5/forecast?id="+query+'&units='+tempType+'&APPID='+process.env.WEATHER_API_ID
   request(url, function(error, response, data) {
   if (!error && response.statusCode == 200) {
   res.send(data)

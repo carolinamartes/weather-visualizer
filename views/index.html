@@ -12,24 +12,30 @@
   <body>
     <div id="main-container">
       <div id="searchval">
+            <div id="tempType" class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary btn-md active">
+              <input type="radio" value="imperial" autocomplete="off" checked> &degF
+            </label>
+            <label class="btn btn-primary btn-md">
+              <input type="radio" value="metric" autocomplete="off"> &degC
+             </label>
+          </div>
         <form id="form">
           <input type="text" id="location-input" value="" placeholder="Search city, zip, or place">
         </form>
-      </div>
-       <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary btn-lg active">
-          <input type="radio" name="options" id="graph" autocomplete="off" checked> Forecast
-        </label>
-        <label class="btn btn-primary btn-lg">
-          <input type="radio" name="options" id="map" autocomplete="off"> Map
-        </label>
+          <div id="displayType" class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary btn-lg active">
+              <input type="radio" name="options" id="graph" autocomplete="off" checked> Forecast
+            </label>
+            <label class="btn btn-primary btn-lg">
+              <input type="radio" name="options" id="map" autocomplete="off"> Map
+             </label>
+          </div>
       </div>
       <div id="plot">
       </div>
       <div id="description">
       </div>
-      </div>
-      <div type="hidden" id="geolocation">
       </div>
   </body>
   <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
