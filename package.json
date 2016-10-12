@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
+    "openlayers": "^3.18.2",
     "pg-promise": "^5.3.4"
   }
 }

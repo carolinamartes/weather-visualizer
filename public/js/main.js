@@ -1,15 +1,20 @@
-$(console.log("working..."))
+  $(document).ready(function() {
+    console.log("working...")
 
-  var geocoder;
+  let geocoder;
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
 }
 //Get the latitude and the longitude;
 function successFunction(position) {
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
     codeLatLng(lat, lng)
+    coordArr=[];
+    coordArr.push(lat);
+    coordArr.push(lng);
+    $('#latlng').val(coordArr)
 }
 
 function errorFunction(){
@@ -17,12 +22,12 @@ function errorFunction(){
 }
 
   function initialize() {
-    geocoder = new google.maps.Geocoder();
+   geocoder = new google.maps.Geocoder();
   }
 
-  function codeLatLng(lat, lng) {
+  const codeLatLng=function(lat, lng) {
 
-    var latlng = new google.maps.LatLng(lat, lng);
+    const latlng = new google.maps.LatLng(lat, lng);
     geocoder.geocode({'latLng': latlng}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         if (results[1]) {
@@ -36,7 +41,6 @@ function errorFunction(){
                     const geoCity= results[0].address_components[i];
                     const geoCountry=results[0].address_components[6]
                        //city data
-        console.log(geoCity.long_name +","+ geoCountry.short_name);
         $("#location-input").val(geoCity.long_name +", "+ geoCountry.short_name);
             const cityState=decodeURIComponent($('#location-input').val());
             const cityStateArray=cityState.split(', ');
@@ -56,9 +60,8 @@ function errorFunction(){
         }
     });
   }
-
+ //initialize geolocation
 initialize()
-
 
 $("#location-input").autocomplete({
   source: function( request, response ) {
@@ -87,12 +90,12 @@ $("#location-input").autocomplete({
       }
 });
 
-
 $('#form').on("submit",function(e){
   e.preventDefault();
+  $('#map').hide();
+  $('#plot').show();
   let query=$('#searchval').val()
   let temp=$("#tempType label.active input").val();
-  console.log(temp)
   $.ajax({
   type: 'GET',
   url: 'search/'+query+'/'+temp,
@@ -100,9 +103,8 @@ $('#form').on("submit",function(e){
   success:function(output){
   $('#description').html('');
   output=JSON.parse(output)
-   myDiv = document.getElementById('myDiv');
 
-    var makeTempArray=function(startNum){
+    const makeTempArray=function(startNum){
       tempArray=[];
       for(var i=startNum;i<40;i+=8){
         tempArray.push(output.list[i].main.temp)
@@ -221,3 +223,54 @@ $('#form').on("submit",function(e){
   }
 }) //end ajax call
 })//end form submit
+
+
+$("#displayType").on("change", function(){
+
+  if ($("#displayType label.active input").val()=="map"){
+  $('#plot').hide();
+  $('#map').show();
+   function init(){
+
+  var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.transform([coordArr[1],coordArr[0]], 'EPSG:4326', 'EPSG:3857'),
+          zoom: 8
+        })
+      });
+
+      var layer_cloud = new ol.layer.Tile({
+          source: new ol.source.XYZ({
+          //url from: https://gist.github.com/karlfloersch/1bb1e23ae7c31082cdd4
+            url: 'http://maps.owm.io:8091/56cde48b4376d3010038aa91/{z}/{x}/{y}?hash=5',
+          })
+      });
+      map.addLayer(layer_cloud);
+
+    }
+    setTimeout(init,2000)
+  }
+   if ($("#displayType label.active input").val()=="graph"){
+
+        $('#form').submit()
+      }
+
+
+})
+
+    if ($("#displayType label.active input").val()=="graph"){
+      var submitForm=function(){
+        $('#form').submit()
+      }
+      setTimeout(submitForm,4000)
+    }
+
+ });
+
+
