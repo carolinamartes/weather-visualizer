@@ -41,8 +41,28 @@ var input= req.params.input;
     })
     res.send(result)
   });
-
 });
+
+app.get('/geolocation/:city/:state', function (req, res, next) {
+let city= req.params.city;
+let state=req.params.state;
+
+  db.many(
+    "SELECT * FROM cities WHERE data->>'name' = $1 AND data->>'country' = $2 LIMIT 10", [city, state]
+  ).catch(function(error) {
+    console.log(error)
+    next();
+  }).then(function(data) {
+    result=[]
+    data.forEach(function(el){
+      if (!result.includes(el)){
+      result.push({label:el.data.name+", "+el.data.country, value:el.data._id})
+    }
+    })
+    res.send(result)
+  });
+});
+
 
 
 app.listen(3000, function () {

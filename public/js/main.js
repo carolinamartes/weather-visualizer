@@ -1,5 +1,67 @@
 $(console.log("working..."))
 
+  var geocoder;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+}
+//Get the latitude and the longitude;
+function successFunction(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    codeLatLng(lat, lng)
+}
+
+function errorFunction(){
+    console.log("Geocoder failed");
+}
+
+  function initialize() {
+    geocoder = new google.maps.Geocoder();
+  }
+
+  function codeLatLng(lat, lng) {
+
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({'latLng': latlng}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        if (results[1]) {
+          alert(results[0].formatted_address)
+        //find country name
+            for (var i=0; i<results[0].address_components.length; i++) {
+            for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
+                    //this is the object you are looking for
+                    const geoCity= results[0].address_components[i];
+                    const geoCountry=results[0].address_components[6]
+                       //city data
+        console.log(geoCity.long_name +","+ geoCountry.short_name);
+        $("#location-input").val(geoCity.long_name +", "+ geoCountry.short_name);
+            const cityState=decodeURIComponent($('#location-input').val());
+            const cityStateArray=cityState.split(', ');
+            const city=cityStateArray[0];
+            const state=cityStateArray[1];
+             $.ajax({
+                      type : 'GET',
+                      url: '/geolocation/'+city+'/'+state,
+                      success: function(data) {
+                        console.log(data[0].value);
+                        $('#searchval').val(data[0].value)
+                      },
+                  });
+                }
+             }
+             }
+          }
+        }
+    });
+  }
+
+initialize()
+
+
 $("#location-input").autocomplete({
   source: function( request, response ) {
           $.ajax({
@@ -29,10 +91,8 @@ $("#location-input").autocomplete({
 
 
 $('#form').on("submit",function(e){
-  e.preventDefault()
-  console.log("submitted")
+  e.preventDefault();
   let query=$('#searchval').val()
-  console.log(query)
   $.ajax({
   type: 'GET',
   url: 'search/'+query,
@@ -72,6 +132,7 @@ $('#form').on("submit",function(e){
             color: '#7f7f7f'
         }
       } );
+      //end new plot
 
     plot.on('plotly_click', function(data){
         const pointx=data.points[0].pointNumber[0]
@@ -151,12 +212,13 @@ $('#form').on("submit",function(e){
                 console.log("Error")
         }
 
-    });
+    });//end plotly on click
 
     console.log(output)
-  },
+  },//end success ajax call
+
   error:function(error){
     console.log(error)
   }
-});
-})
+}) //end ajax call
+})//end form submit
