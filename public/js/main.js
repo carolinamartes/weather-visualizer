@@ -1,11 +1,16 @@
   $(document).ready(function() {
     console.log("working...")
+    var t0 = performance.now();
 
+  var geolocate=function(){
   let geocoder;
-
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-}
+    initialize();
+  }
+ }
+
+
 //Get the latitude and the longitude;
 function successFunction(position) {
     const lat = position.coords.latitude;
@@ -31,16 +36,10 @@ function errorFunction(){
     geocoder.geocode({'latLng': latlng}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         if (results[1]) {
-        //find country name
-            for (var i=0; i<results[0].address_components.length; i++) {
-            for (var b=0;b<results[0].address_components[i].types.length;b++) {
 
-            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
-                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                    //this is the object you are looking for
-                    const geoCity= results[0].address_components[i];
+                    const geoCity= results[0].address_components[5];
                     const geoCountry=results[0].address_components[6]
-                       //city data
+
         $("#location-input").val(geoCity.long_name +", "+ geoCountry.short_name);
             const cityState=decodeURIComponent($('#location-input').val());
             const cityStateArray=cityState.split(', ');
@@ -51,17 +50,18 @@ function errorFunction(){
                       url: '/geolocation/'+city+'/'+state,
                       success: function(data) {
                         $('#searchval').val(data[0].value)
+                            var t1 = performance.now();
+                            var timeToGeolocate= t1-t0
+                            window.localStorage.timeToGeolocate=timeToGeolocate
                       },
                   });
-                }
-             }
-             }
           }
         }
     });
   }
  //initialize geolocation
-initialize()
+   geolocate()
+
 
 $("#location-input").autocomplete({
   source: function( request, response ) {
@@ -261,14 +261,13 @@ $("#displayType").on("change", function(){
         $('#form').submit()
       }
 
-
 })
 
     if ($("#displayType label.active input").val()=="graph"){
       var submitForm=function(){
         $('#form').submit()
       }
-      setTimeout(submitForm,4000)
+      setTimeout(submitForm,window.localStorage.timeToGeolocate+100)
     }
 
  });
