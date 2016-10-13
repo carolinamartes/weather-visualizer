@@ -13,18 +13,22 @@
     <title>Weather Visualizer</title>
   </head>
   <body>
-    <div id="main-container">
-      <div id="searchval">
+    <nav class="navbar navbar-default navbar-static-top">
+            <div id="searchval">
             <div id="tempType" class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary btn-md active">
-              <input type="radio" value="imperial" autocomplete="off" checked> &degF
+              <input type="radio" value="imperial" id="Fahrenheit" autocomplete="off" checked> &degF
             </label>
             <label class="btn btn-primary btn-md">
-              <input type="radio" value="metric" autocomplete="off"> &degC
+              <input type="radio" value="metric" id="Celsius" autocomplete="off"> &degC
              </label>
           </div>
         <form id="form">
           <input type="text" id="location-input" value="" placeholder="Search city, zip, or place">
+          <button type="submit" class="btn btn-default btn-md" aria-label="Left Align">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          </button>
+
         </form>
           <div id="displayType" class="btn-group" data-toggle="buttons">
             <label class="btn btn-primary btn-lg active">
@@ -35,12 +39,15 @@
              </label>
           </div>
       </div>
-      </div>
+    </nav>
+    <div id="main-container">
        <div id="plot">
            <div id="description"></div>
        </div>
+       </div>
        <div id="map" class="map"></div>
        <div id="latlng"></div>
+       <div id="hoverinfo" style="margin-left:80px;"></div>
   </body>
   <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>

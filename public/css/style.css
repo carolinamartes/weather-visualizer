@@ -2,10 +2,15 @@ body{
    font-family: 'Raleway, Helvetica, monospace';
 }
 
+.navbar{
+  padding: 2vh 2vw;
+  margin-bottom: 0;
+}
+
 
 #main-container{
   width: 80vw;
-  margin: 3vh auto;
+  margin: 0 auto;
   font-family: 'Raleway, Helvetica, monospace';
   font-size: 1.2em;
   font-weight: 500;
@@ -17,9 +22,16 @@ body{
   width: 15em;
   height: 3em;
   text-align: center;
+  font-size: 1.2em;
+  padding-right: 1vw;
 }
+
+
 form, #tempType{
   float: right;
+}
+form{
+   margin-right: 5vw;
 }
 
 #tempType{
@@ -29,6 +41,10 @@ form, #tempType{
 #plot{
   margin:  0 auto;
   margin-top: 2vh;
+}
+
+.hovertext text{
+  font-size:1.5em !important;
 }
 
 .icon{

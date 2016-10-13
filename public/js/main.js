@@ -1,15 +1,14 @@
   $(document).ready(function() {
     console.log("working...")
-    var t0 = performance.now();
+    const t0 = performance.now();
 
-  var geolocate=function(){
+  const geolocate=function(){
   let geocoder;
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
     initialize();
   }
  }
-
 
 //Get the latitude and the longitude;
 function successFunction(position) {
@@ -50,8 +49,8 @@ function errorFunction(){
                       url: '/geolocation/'+city+'/'+state,
                       success: function(data) {
                         $('#searchval').val(data[0].value)
-                            var t1 = performance.now();
-                            var timeToGeolocate= t1-t0
+                            const t1 = performance.now();
+                            const timeToGeolocate= t1-t0
                             window.localStorage.timeToGeolocate=timeToGeolocate
                       },
                   });
@@ -61,7 +60,6 @@ function errorFunction(){
   }
  //initialize geolocation
    geolocate()
-
 
 $("#location-input").autocomplete({
   source: function( request, response ) {
@@ -96,6 +94,7 @@ $('#form').on("submit",function(e){
   $('#plot').show();
   let query=$('#searchval').val()
   let temp=$("#tempType label.active input").val();
+  let degree= $("#tempType label.active input").attr("id")
   $.ajax({
   type: 'GET',
   url: 'search/'+query+'/'+temp,
@@ -103,6 +102,11 @@ $('#form').on("submit",function(e){
   success:function(output){
   $('#description').html('');
   output=JSON.parse(output)
+
+
+  for(var i=0;i<output.list.length;i++){
+   output.list[i].main.temp= Math.floor(output.list[i].main.temp)
+  }
 
     const makeTempArray=function(startNum){
       tempArray=[];
@@ -122,18 +126,23 @@ $('#form').on("submit",function(e){
           y: ['Morning', 'Afternoon', 'Evening'],
           x: ['Tomorrow', '+2 Days', '+3 Days', '+4 Days', '+5 Days'],
           type: 'heatmap',
+          // text: String.fromCharCode(176) + " " +degree,
           hoverinfo:'z',
           ygap: 5,
           xgap:5
         }], {
-          title: 'Five Day Forecast for '+ $('#location-input').val(),
+          title: 'Five Day Forecast for '+ '<b>'+$('#location-input').val()+'</b>',
           font: {
-            family: 'Raleway, Helvetica, monospace',
-            size: 14,
+            family: 'Georgia, serif',
+            size: 16,
             color: '#7f7f7f'
         }
       } );
+
       //end new plot
+    plot.on('plotly_hover', function(data) {
+      $('rect').css( 'cursor', 'pointer' );
+    })
 
     plot.on('plotly_click', function(data){
         const pointx=data.points[0].pointNumber[0]
@@ -232,7 +241,7 @@ $("#displayType").on("change", function(){
   $('#map').show();
    function init(){
 
-  var map = new ol.Map({
+  const map = new ol.Map({
         target: 'map',
         layers: [
           new ol.layer.Tile({
@@ -245,7 +254,7 @@ $("#displayType").on("change", function(){
         })
       });
 
-      var layer_cloud = new ol.layer.Tile({
+      const layer_cloud = new ol.layer.Tile({
           source: new ol.source.XYZ({
           //url from: https://gist.github.com/karlfloersch/1bb1e23ae7c31082cdd4
             url: 'http://maps.owm.io:8091/56cde48b4376d3010038aa91/{z}/{x}/{y}?hash=5',
@@ -257,18 +266,19 @@ $("#displayType").on("change", function(){
     setTimeout(init,2000)
   }
    if ($("#displayType label.active input").val()=="graph"){
-
         $('#form').submit()
       }
-
-})
+  })
 
     if ($("#displayType label.active input").val()=="graph"){
-      var submitForm=function(){
+      const submitForm=function(){
         $('#form').submit()
       }
       setTimeout(submitForm,window.localStorage.timeToGeolocate+100)
     }
+    $('#tempType').on("change", function(){
+      $('#form').submit()
+    })
 
  });
 
